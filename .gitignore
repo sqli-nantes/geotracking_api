@@ -1,0 +1,7 @@
+.gradle
+.idea
+.settings
+.vertx
+.vscode
+bin
+build

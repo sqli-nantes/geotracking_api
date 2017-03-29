@@ -1,0 +1,38 @@
+// Les plugins spécifiques au projet
+//'application' est utilisé en dév pour faire tourner le projet sur la JVM
+//'java' est utilisé pour construire les jar
+apply plugin: 'application'
+
+//Repo contenant les dépendances externes, ex: mavenCentral() ou jCenter()
+repositories {
+    mavenCentral()
+}
+
+//Version de vert.x
+version = '3.4.1'
+
+//Liste des dépendances nécessaires au projet
+dependencies {
+    compile group: 'io.vertx', name: 'vertx-core', version: "$version"
+    compile group: 'io.vertx', name: 'vertx-web', version: "$version"
+}
+
+//Point d'entrée
+mainClassName = 'io.vertx.core.Launcher'
+def mainVerticleName = 'archi.pole.rest.PremierREST'
+
+//Chemin pour surveiller les modification de fichiers
+def watchForChange = 'src/**/*.java'
+
+//Commande en cas de détection d'un changement, utilisable en l'état sur Linux uniquement
+def doOnChange = './gradlew classes'
+
+//Commande de run qui permet le hot deploy
+run {
+    args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
+}
+
+//Wrapper gradle pour s'assurer de builder avec la bonne version de l'outil'
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.10'
+}
