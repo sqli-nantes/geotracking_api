@@ -1,28 +1,52 @@
+//Gestion des dépendances externes pour le script de build, ex: kotlin
+buildscript {
+    repositories {
+        jcenter()
+    }
+     ext {
+        kotlin_version = '1.1.0'
+    }
+    dependencies {
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 // Les plugins spécifiques au projet
 //'application' est utilisé en dév pour faire tourner le projet sur la JVM
 //'java' est utilisé pour construire les jar
 apply plugin: 'application'
+apply plugin: 'kotlin'
 
 //Repo contenant les dépendances externes, ex: mavenCentral() ou jCenter()
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 //Version de vert.x
 version = '3.4.1'
 
+
 //Liste des dépendances nécessaires au projet
 dependencies {
     compile group: 'io.vertx', name: 'vertx-core', version: "$version"
     compile group: 'io.vertx', name: 'vertx-web', version: "$version"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"
+
+
+    compile 'io.vertx:vertx-mongo-client:3.4.1'
+
 }
+
 
 //Point d'entrée
 mainClassName = 'io.vertx.core.Launcher'
 def mainVerticleName = 'archi.pole.rest.PremierREST'
 
 //Chemin pour surveiller les modification de fichiers
-def watchForChange = 'src/**/*.java'
+def watchForChange = 'src/**/*.*'
 
 //Commande en cas de détection d'un changement, utilisable en l'état sur Linux uniquement
 def doOnChange = './gradlew classes'
