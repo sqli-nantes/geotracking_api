@@ -35,7 +35,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"
 
-
     compile 'io.vertx:vertx-mongo-client:3.4.1'
 
 }
