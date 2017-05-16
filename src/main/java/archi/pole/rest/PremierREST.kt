@@ -28,13 +28,10 @@ class PremierREST : AbstractVerticle() {
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
         vertx.createHttpServer().requestHandler { router.accept(it) }.listen(8080, { res -> fut.complete() })
+        
+        client = Connection().init(vertx);
 
-        val uri = "mongodb://172.17.0.2:27017"
-        val db = "test"
-        val mongoconfig = JsonObject.mapFrom(MongoConfig(uri, db))
-        client = MongoClient.createShared(vertx, mongoconfig)
         Mock().setupInitialData(client)
-
     }
 
     val handleCompanies = Handler <RoutingContext> { req ->
@@ -64,4 +61,4 @@ class PremierREST : AbstractVerticle() {
 
 }
 
-data class MongoConfig(val connection_string: String, val db_name: String)
+// data class MongoConfig(val connection_string: String, val db_name: String)
