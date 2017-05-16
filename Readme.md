@@ -38,3 +38,5 @@ Tester le service avec:
 ```
 curl -X GET -i http://localhost:8080/companies
 ```
+
+Sous licence MIT
