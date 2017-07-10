@@ -11,13 +11,16 @@ class Mock {
 
     private val MOCK_DATA by lazy {
         val cons1 = mutableListOf<Consultant>()
-        cons1.add(0, Consultant("Moi", "ici"))
-        cons1.add(1, Consultant("Lui", "là"))
+        cons1.add(0, Consultant("Pierre", "Dupont"))
+        cons1.add(1, Consultant("Jean", "Dupond"))
+          val cons2 = mutableListOf<Consultant>()
+        cons2.add(0, Consultant("Lucie", "Bupont"))
+        cons2.add(1, Consultant("Jeanne", "Bupond"))
         listOf(
                 Company("La Poste", "Auguste Pageot", cons1),
-                Company("IBP", "Nantes", cons1),
+                Company("IBP", "Nantes", cons2),
                 Company("SG", "Saint Herblain", cons1),
-                Company("CBP", "Nantes", cons1)
+                Company("CBP", "Nantes", cons2)
         )
     }
 

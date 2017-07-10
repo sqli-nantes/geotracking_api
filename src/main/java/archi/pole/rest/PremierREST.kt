@@ -8,6 +8,7 @@ import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
+//import com.beust.klaxon.JsonObject
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
@@ -28,7 +29,7 @@ class PremierREST : AbstractVerticle() {
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
         vertx.createHttpServer().requestHandler { router.accept(it) }.listen(8080, { res -> fut.complete() })
-        
+
         client = Connection().init(vertx);
 
         Mock().setupInitialData(client)
@@ -42,8 +43,20 @@ class PremierREST : AbstractVerticle() {
         client.find("companies", JsonObject(), { res ->
             if (res.succeeded()) {
                 var companies = JsonArray()
-                for (json in res.result()) {
-                    companies.add(JsonObject.mapFrom(Company(json.getString("name"), json.getString("address"), mutableListOf<Consultant>())))
+                for (company in res.result()) {
+                    val consultantsJson = company.getJsonArray("consultants")
+                    val consultants = mutableListOf<Consultant>()
+                    for ((index, consultant) in consultantsJson.withIndex()) {
+                        // val x: JsonObject? = consultant as? JsonObject
+                        // println(x?.getString("name"))
+
+                        //TODO: Smart casts de Kotlin: faire confirmer
+                        if (consultant is JsonObject) {
+                            consultants.add(index, Consultant(consultant.getString("name"), consultant.getString("forename")))
+                        }
+                    }
+
+                    companies.add(JsonObject.mapFrom(Company(company.getString("name"), company.getString("address"), consultants)))
                 }
 
                 req.response().endWithJson(companies)
