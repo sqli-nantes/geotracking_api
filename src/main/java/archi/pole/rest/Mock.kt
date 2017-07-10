@@ -15,7 +15,6 @@ class Mock {
         cons1.add(1, Consultant("Jean", "Dupond"))
           val cons2 = mutableListOf<Consultant>()
         cons2.add(0, Consultant("Lucie", "Bupont"))
-        cons2.add(1, Consultant("Jeanne", "Bupond"))
         listOf(
                 Company("La Poste", "Auguste Pageot", cons1),
                 Company("IBP", "Nantes", cons2),
