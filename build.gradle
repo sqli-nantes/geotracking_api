@@ -24,7 +24,7 @@ repositories {
 }
 
 //Version de vert.x
-version = '3.4.1'
+version = '3.4.2'
 
 
 //Liste des dépendances nécessaires au projet
@@ -52,10 +52,11 @@ def doOnChange = './gradlew classes'
 
 //Commande de run qui permet le hot deploy
 run {
-    args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
+    args = ['run', mainVerticleName, "--launcher-class=$mainClassName"]
 }
 
 //Wrapper gradle pour s'assurer de builder avec la bonne version de l'outil'
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.10'
+    gradleVersion = '4.0'
 }
+
