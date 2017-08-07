@@ -26,7 +26,7 @@ class PremierREST : AbstractVerticle() {
         val router = Router.router(vertx)
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
-        vertx.createHttpServer().requestHandler { router.accept(it) }.listen(8080, { res -> fut.complete() })
+        vertx.createHttpServer().requestHandler({ router.accept(it)}).listen(8080, { res -> fut.complete() })
 
         client = Connection().init(vertx)
 
