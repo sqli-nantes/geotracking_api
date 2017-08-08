@@ -1,16 +1,10 @@
 package archi.pole.rest
 
-import io.vertx.core.AbstractVerticle
-import io.vertx.core.Future
-import io.vertx.core.Handler
 import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
-import io.vertx.ext.web.handler.BodyHandler
-
 
 import io.vertx.ext.mongo.MongoClient
 
@@ -19,7 +13,7 @@ import io.vertx.ext.mongo.MongoClient
  */
 
 
-class PremierREST {
+class Companies {
 
     fun getCompanies(req: RoutingContext, client: MongoClient) {
         client.find("companies", JsonObject(), { res ->

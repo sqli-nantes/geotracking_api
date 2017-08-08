@@ -26,11 +26,11 @@ class Router : AbstractVerticle() {
     }
 
     val handleCompanies = Handler <RoutingContext> { req ->
-        PremierREST().getCompanies(req, client)
+        Companies().getCompanies(req, client)
     }
 
     val handleCompany = Handler <RoutingContext> { req ->
         var id = req.request().getParam("companyid")
-        PremierREST().getCompany(req, id, client)
+        Companies().getCompany(req, id, client)
     }
 }
