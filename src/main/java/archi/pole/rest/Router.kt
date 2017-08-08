@@ -17,6 +17,8 @@ class Router : AbstractVerticle() {
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
         router.get("/company/:companyid").handler(handleCompany)
+        router.get("/consultant/:consultantname").handler(handleConsultant)
+
 
         vertx.createHttpServer().requestHandler({ router.accept(it) }).listen(8080, { res -> fut.complete() })
 
@@ -32,5 +34,10 @@ class Router : AbstractVerticle() {
     val handleCompany = Handler <RoutingContext> { req ->
         var id = req.request().getParam("companyid")
         Companies().getCompany(req, id, client)
+    }
+
+    val handleConsultant = Handler <RoutingContext> { req ->
+        var name = req.request().getParam("consultantname")
+        Consultants().getConsultant(req, name, client)
     }
 }

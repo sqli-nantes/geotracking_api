@@ -15,6 +15,9 @@ import io.vertx.ext.mongo.MongoClient
 
 class Companies {
 
+    /**
+     * Get every company
+     */
     fun getCompanies(req: RoutingContext, client: MongoClient) {
         client.find("companies", JsonObject(), { res ->
             if (res.succeeded()) {
@@ -30,7 +33,7 @@ class Companies {
                     }
                     companies.add(JsonObject.mapFrom(Company(company.getString("name"), company.getString("address"), consultants)))
                 }
-                req.response().endWithJson(companies)
+                req.response().endWithJson(JsonObject().put("result", companies))
             } else {
                 res.cause().printStackTrace()
             }
