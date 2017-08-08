@@ -33,7 +33,7 @@ class Companies {
                     }
                     companies.add(JsonObject.mapFrom(Company(company.getString("name"), company.getString("address"), consultants)))
                 }
-                req.response().endWithJson(JsonObject().put("result", companies))
+                req.response().endWithJson(companies)
             } else {
                 res.cause().printStackTrace()
             }
@@ -64,9 +64,9 @@ class Companies {
                 }
 
                 if (foundCompany.name != "") {
-                    req.response().endWithJson(JsonObject().put("result", foundCompany.toJsonObject()))
+                    req.response().endWithJson(foundCompany.toJsonObject())
                 } else {
-                    req.response().endWithJson(JsonObject().put("result", "Company not found"))
+                    req.response().endWithJson("Company not found")
                 }
 
             }
@@ -74,7 +74,7 @@ class Companies {
     }
 
     fun HttpServerResponse.endWithJson(obj: Any) {
-        this.putHeader("Content-Type", "application/json; charset=utf-8").end(Json.encodePrettily(obj))
+        this.putHeader("Content-Type", "application/json; charset=utf-8").end(Json.encodePrettily(JsonObject().put("result", obj)))
     }
 
 

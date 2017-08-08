@@ -13,7 +13,7 @@ class Consultants {
     /**
      * Get a consultant by name
      */
-    fun getConsultant(req: RoutingContext, name: String, client: MongoClient) {
+    fun getConsultantByName(req: RoutingContext, name: String, client: MongoClient) {
         client.find("companies", JsonObject(), { res ->
             if (res.succeeded()) {
                 var foundConsultant = JsonObject()
@@ -30,16 +30,16 @@ class Consultants {
 
                 }
                 if (foundConsultant.getString("name") != null) {
-                    req.response().endWithJson(JsonObject().put("result", foundConsultant))
+                    req.response().endWithJson(foundConsultant)
                 } else {
-                    req.response().endWithJson(JsonObject().put("result", "Consultant not found"))
+                    req.response().endWithJson("Consultant not found")
                 }
             }
         })
     }
 
     fun HttpServerResponse.endWithJson(obj: Any) {
-        this.putHeader("Content-Type", "application/json; charset=utf-8").end(Json.encodePrettily(obj))
+        this.putHeader("Content-Type", "application/json; charset=utf-8").end(Json.encodePrettily(JsonObject().put("result", obj)))
     }
 
 

@@ -38,6 +38,6 @@ class Router : AbstractVerticle() {
 
     val handleConsultant = Handler <RoutingContext> { req ->
         var name = req.request().getParam("consultantname")
-        Consultants().getConsultant(req, name, client)
+        Consultants().getConsultantByName(req, name, client)
     }
 }
