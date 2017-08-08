@@ -18,33 +18,10 @@ import io.vertx.ext.mongo.MongoClient
  * Created by johann on 20/03/17.
  */
 
-@Suppress("unused")
-class PremierREST : AbstractVerticle() {
-    lateinit var client: MongoClient
 
-    override fun start(fut: Future<Void>) {
-        val router = Router.router(vertx)
-        router.route().handler(BodyHandler.create())
-        router.get("/companies").handler(handleCompanies)
-        router.get("/company/:companyid").handler(handleCompany)
+class PremierREST {
 
-        vertx.createHttpServer().requestHandler({ router.accept(it) }).listen(8080, { res -> fut.complete() })
-
-        client = Connection().init(vertx)
-
-        Mock().setupInitialData(client)
-    }
-
-    val handleCompanies = Handler <RoutingContext> { req ->
-        getCompanies(req)
-    }
-
-    val handleCompany = Handler <RoutingContext> { req ->
-        var id = req.request().getParam("companyid")
-        getCompany(req, id)
-    }
-
-    fun getCompanies(req: RoutingContext) {
+    fun getCompanies(req: RoutingContext, client: MongoClient) {
         client.find("companies", JsonObject(), { res ->
             if (res.succeeded()) {
                 var companies = JsonArray()
@@ -66,10 +43,11 @@ class PremierREST : AbstractVerticle() {
         })
     }
 
+
     /**
      * Get company from name
      */
-    fun getCompany(req: RoutingContext, id: String) {
+    fun getCompany(req: RoutingContext, id: String, client: MongoClient) {
         client.find("companies", JsonObject(), { res ->
             if (res.succeeded()) {
                 var foundCompany = Company()

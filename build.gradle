@@ -42,7 +42,7 @@ dependencies {
 
 //Point d'entrée
 mainClassName = 'io.vertx.core.Launcher'
-def mainVerticleName = 'archi.pole.rest.PremierREST'
+def mainVerticleName = 'archi.pole.rest.Router'
 
 //Chemin pour surveiller les modification de fichiers
 def watchForChange = 'src/**/*.*'
