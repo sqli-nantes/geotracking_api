@@ -30,7 +30,9 @@ class Companies {
                     for ((index, consultant) in consultantsJson.withIndex()) {
                         //TODO: Smart casts de Kotlin: faire confirmer
                         if (consultant is JsonObject) {
-                            consultants.add(index, Consultant(consultant.getString("name"), consultant.getString("forename")))
+                            var name : String = if (consultant.getString("name") != null) consultant.getString("name") else ""
+                            var forename : String = if (consultant.getString("forename") != null) consultant.getString("forename") else ""
+                            consultants.add(index, Consultant(name, forename))
                         }
                     }
                     companies.add(JsonObject.mapFrom(Company(company.getString("name"), company.getString("address"), consultants)))
