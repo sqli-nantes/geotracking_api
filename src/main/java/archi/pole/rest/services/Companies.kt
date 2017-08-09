@@ -1,7 +1,7 @@
 package archi.pole.rest.services
 
-import archi.pole.rest.Entities.Company
-import archi.pole.rest.Entities.Consultant
+import archi.pole.rest.entities.Company
+import archi.pole.rest.entities.Consultant
 import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
