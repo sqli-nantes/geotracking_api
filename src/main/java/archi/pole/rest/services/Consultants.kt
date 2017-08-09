@@ -1,9 +1,9 @@
 package archi.pole.rest.services
 
-
 import io.vertx.core.json.Json
 import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.mongo.FindOptions
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.core.json.*
@@ -36,6 +36,36 @@ class Consultants {
                 } else {
                     req.response().endWithJson("Consultant not found")
                 }
+            }
+        })
+    }
+
+    /**
+     * Get consultants by Forename following the hierarchy of the mongo document
+     */
+    fun getConsultantByForename(req: RoutingContext, client: MongoClient) {
+        val forename = req.request().getParam("consultantforename")
+        val query = json {
+            obj("consultants.forename" to forename)
+        }
+        //Mongo projection, i.e.: fields to be returned
+        //!!!!!!!!!!!!!!This option only returns the first consultant in every company!!!!!!!!!!!!!!!!!
+        val options = FindOptions()
+        options.fields = json {
+            obj("name" to true, "consultants.name" to true, "consultants.forename" to true, "consultants" to obj("\$slice" to 1))
+//            obj("name" to true, "consultants.name" to true, "consultants.forename" to true, "consultants" to obj("\$filter" to obj("forename" to forename)))
+        }
+
+        client.findWithOptions("companies", query, options, { res ->
+            if (res.succeeded()) {
+                if (res.result().isEmpty()) {
+                    req.response().endWithJson("Consultant not found")
+                } else {
+                    req.response().endWithJson(res.result())
+                }
+
+            } else {
+                res.cause().printStackTrace()
             }
         })
     }

@@ -21,7 +21,8 @@ class Router : AbstractVerticle() {
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
         router.get("/company/:companyid").handler(handleCompany)
-        router.get("/consultant/:consultantname").handler(handleConsultant)
+        router.get("/consultant/name/:consultantname").handler(handleConsultantName)
+        router.get("/consultant/forename/:consultantforename").handler(handleConsultantForename)
 
         router.put("/consultant/:consultantname").handler(handleConsultantPut)
 
@@ -41,9 +42,12 @@ class Router : AbstractVerticle() {
         Companies().getCompany(req, id, client)
     }
 
-    val handleConsultant = Handler <RoutingContext> { req ->
+    val handleConsultantName = Handler <RoutingContext> { req ->
         var name = req.request().getParam("consultantname")
         Consultants().getConsultantByName(req, name, client)
+    }
+    val handleConsultantForename = Handler <RoutingContext> { req ->
+        Consultants().getConsultantByForename(req, client)
     }
 
     val handleConsultantPut = Handler <RoutingContext> { req ->
