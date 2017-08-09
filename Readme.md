@@ -39,4 +39,17 @@ Tester le service avec:
 curl -X GET -i http://localhost:8080/companies
 ```
 
+### Utilisation Docker
+* build
+```
+    docker build -t geotracking-api:1 .
+```
+
+* run depuis le répertoire des sources (ou modifier `$(pwd)` sinon)
+```
+    docker run -d --name geotracking-api --link some-mongo:mongo-host geotracking-api:1
+```
+
+
+# Licence
 Sous licence MIT
