@@ -50,6 +50,7 @@ def watchForChange = 'src/**/*.*'
 //Commande en cas de détection d'un changement, utilisable en l'état sur Linux uniquement
 def doOnChange = './gradlew classes'
 
+
 //Commande de run qui permet le hot deploy
 run {
     args = ['run', mainVerticleName, "--launcher-class=$mainClassName"]

@@ -20,7 +20,7 @@ git clone
 
 On lance le conteneur docker en background
 ```
-docker run --name some-mongo -d mongo
+docker run --name mongo-host -d mongo
 ```
 
 Récupérer l'adresse du conteneur docker et la remplacer dans les sources, ex: 
