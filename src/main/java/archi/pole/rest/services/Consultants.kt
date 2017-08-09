@@ -15,6 +15,7 @@ class Consultants {
      * Get a consultant by name
      */
     fun getConsultantByName(req: RoutingContext, name: String, client: MongoClient) {
+
         client.find("companies", JsonObject(), { res ->
             if (res.succeeded()) {
                 var foundConsultant = JsonObject()
@@ -39,20 +40,23 @@ class Consultants {
         })
     }
 
+    /**
+     * Update a consultant by name
+     */
     fun updateConsultant(req: RoutingContext, client: MongoClient) {
-        var oldName = req.request().getParam("consultantname")
-        var body = req.bodyAsJson
+        val oldName = req.request().getParam("consultantname")
+        val body = req.bodyAsJson
 
-        // Match one consultants with name and forename from request parameter
-        var query = json {
+        // Match one consultant with name and forename from request parameter
+        val query = json {
             obj("consultants.name" to oldName)
         }
 
-        var newName: String? = body.getString("name")
-        var newForename: String? = body.getString("forename")
+        val newName: String? = body.getString("name")
+        val newForename: String? = body.getString("forename")
 
         // Update name or/and forename
-        var update = json {
+        val update = json {
             obj("\$set" to obj("consultants.$.name" to newName, "consultants.$.forename" to newForename))
         }
 
