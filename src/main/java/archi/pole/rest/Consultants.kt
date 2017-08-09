@@ -1,11 +1,12 @@
 package archi.pole.rest
 
 
-import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.Json
+import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.RoutingContext
+import io.vertx.kotlin.core.json.*
 
 
 class Consultants {
@@ -36,6 +37,43 @@ class Consultants {
                 }
             }
         })
+    }
+
+    fun updateConsultant(req: RoutingContext, client: MongoClient) {
+        var oldName = req.request().getParam("consultantname")
+        var body = req.bodyAsJson
+
+        // Match one consultants with name and forename from request parameter
+        var query = json {
+            obj("consultants.name" to oldName)
+        }
+
+        var newName: String? = body.getString("name")
+        var newForename: String? = body.getString("forename")
+
+        // Update name or/and forename
+        var update = json {
+            obj("\$set" to obj("consultants.$.name" to newName, "consultants.$.forename" to newForename))
+        }
+
+        //Update the document
+        client.findOneAndUpdate("companies", query, update, { res ->
+            if (res.succeeded()) {
+                //Send the updated document
+                client.find("companies", json { obj("consultants.name" to newName) }, { res ->
+                    if (res.succeeded()) {
+                        req.response().endWithJson(res.result())
+                    } else {
+                        res.cause().printStackTrace()
+                    }
+                })
+            } else {
+                res.cause().printStackTrace()
+            }
+
+        })
+
+
     }
 
     fun HttpServerResponse.endWithJson(obj: Any) {
