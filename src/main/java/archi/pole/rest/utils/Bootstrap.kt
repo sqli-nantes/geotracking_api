@@ -1,5 +1,7 @@
-package archi.pole.rest
+package archi.pole.rest.utils
 
+import archi.pole.rest.entities.Company
+import archi.pole.rest.entities.Consultant
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 
@@ -7,7 +9,7 @@ import io.vertx.ext.mongo.MongoClient
  * Created by johann on 31/03/17.
  */
 
-class Mock {
+class Bootstrap {
 
     private val MOCK_DATA by lazy {
         val cons1 = mutableListOf<Consultant>()

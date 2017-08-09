@@ -1,4 +1,4 @@
-package archi.pole.rest;
+package archi.pole.rest.utils;
 
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.core.json.JsonObject
