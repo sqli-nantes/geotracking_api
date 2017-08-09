@@ -1,4 +1,4 @@
-package archi.pole.rest
+package archi.pole.rest.services
 
 
 import io.vertx.core.json.Json

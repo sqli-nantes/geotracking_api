@@ -1,5 +1,9 @@
 package archi.pole.rest
 
+import archi.pole.rest.services.Companies
+import archi.pole.rest.services.Consultants
+import archi.pole.rest.utils.Connection
+import archi.pole.rest.utils.Bootstrap
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.Handler
@@ -25,7 +29,7 @@ class Router : AbstractVerticle() {
 
         client = Connection().init(vertx)
 
-        Mock().setupInitialData(client)
+        Bootstrap().setupInitialData(client)
     }
 
     val handleCompanies = Handler <RoutingContext> { req ->

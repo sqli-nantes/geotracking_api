@@ -32,6 +32,8 @@ dependencies {
     compile group: 'io.vertx', name: 'vertx-core', version: "$version"
     compile group: 'io.vertx', name: 'vertx-web', version: "$version"
 
+    compile "io.vertx:vertx-lang-kotlin:$version"
+
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"
 
@@ -53,6 +55,8 @@ def doOnChange = './gradlew classes'
 //Commande de run qui permet le hot deploy
 run {
     args = ['run', mainVerticleName, "--launcher-class=$mainClassName"]
+//    args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
+
 }
 
 //Wrapper gradle pour s'assurer de builder avec la bonne version de l'outil'

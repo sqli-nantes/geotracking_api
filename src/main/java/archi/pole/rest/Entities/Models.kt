@@ -1,4 +1,4 @@
-package archi.pole.rest
+package archi.pole.rest.Entities
 
 import io.vertx.core.json.JsonObject
 
