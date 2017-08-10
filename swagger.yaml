@@ -1,0 +1,128 @@
+swagger: '2.0'
+info:
+  title: Geotracking API
+  description: API mission consultants SQLI
+  version: "1.0.0"
+
+host: rest-api.local
+schemes:
+  - http
+produces:
+  - application/json
+  - application/xml
+consumes:
+  - application/json
+  - application/xml
+tags:
+- name: "companies"
+  description: "Every company"
+- name: "company"
+  description: "Specific company"
+- name: "consultant"
+  description: "Specific consultant"
+
+paths: # obligatoire
+  /companies:
+    get:
+      tags:
+        - "companies"
+      summary: Get every company
+      description: Get the collection named companies
+      responses:
+        200:
+          description: Companies
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    address:
+                      type: string
+                    consultants:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          forename:
+                            type: string
+  /company/{name}:
+    get:
+      tags:
+        - "company"
+      summary: Get a specific company
+      description: Get a company by name
+      parameters:
+        - name: "name"
+          in : "path"
+          description: "Name of a company"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: Company
+          schema:
+            type: object
+            properties:
+              result:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    address:
+                      type: string
+                    consultants:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          forename:
+                            type: string
+        404:
+          description: Company not found
+          schema:
+            type: object
+            properties:
+              result:
+                  type: "string"
+  /consultant/name/{name}:
+      get:
+        tags:
+        - "consultant"
+        summary: Get a specific company
+        description: Get a company by name
+        parameters:
+          - name: "name"
+            in : "path"
+            description: "Name of a company"
+            required: true
+            type: "string"
+        responses:
+          200:
+            description: consultant
+            schema:
+              type: object
+              properties:
+                result:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      forename:
+                        type: string
+                      company:
+                        type: string
