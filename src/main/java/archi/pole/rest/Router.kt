@@ -21,9 +21,9 @@ class Router : AbstractVerticle() {
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
         router.get("/company/:companyname").handler(handleCompany)
-        router.get("/consultant/name/:consultantname").handler(handleConsultantName)
-        router.get("/consultant/forename/:consultantforename").handler(handleConsultantForename)
-        router.get("/consultants/").handler(handleConsultants)
+        router.get("/person/name/:consultantname").handler(handleConsultantName)
+        router.get("/person/forename/:consultantforename").handler(handleConsultantForename)
+        router.get("/people/").handler(handleConsultants)
 
         router.put("/consultant/:consultantname").handler(handleConsultantPut)
 
