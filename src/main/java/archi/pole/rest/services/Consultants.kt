@@ -89,7 +89,7 @@ class Consultants {
         client.findOneAndUpdate(Constants().COLLECTION, query, update, { res ->
             if (res.succeeded()) {
                 //Send the updated document
-                client.find("consultants", json { obj("name" to newName) }, { res ->
+                client.find(Constants().COLLECTION, json { obj("name" to newName) }, { res ->
                     if (res.succeeded()) {
                         req.response().endWithJson(res.result())
                     } else {
