@@ -22,7 +22,7 @@ class Bootstrap {
     }
 
     fun setupInitialData(client: MongoClient) {
-        client.dropCollection("consultants", { res ->
+        client.dropCollection(Constants().COLLECTION, { res ->
             if (res.succeeded()) {
                 println("Collection dropped")
             } else {
@@ -30,7 +30,7 @@ class Bootstrap {
             }
         })
         MOCK_DATA.forEachIndexed { index, consultant ->
-            client.save("consultants", JsonObject.mapFrom(consultant), {
+            client.save(Constants().COLLECTION, JsonObject.mapFrom(consultant), {
                 println("Mock $index saved in db")
             })
         }

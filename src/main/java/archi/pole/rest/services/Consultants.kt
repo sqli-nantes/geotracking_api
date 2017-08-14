@@ -1,5 +1,6 @@
 package archi.pole.rest.services
 
+import archi.pole.rest.utils.Constants
 import io.vertx.core.json.Json
 import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.JsonObject
@@ -15,7 +16,7 @@ class Consultants {
      * Get every consultant
      */
     fun getConsultants(req: RoutingContext, client: MongoClient) {
-        client.find("consultants", JsonObject(), { res ->
+        client.find(Constants().COLLECTION, JsonObject(), { res ->
             if (res.succeeded()) {
                 req.response().endWithJson(res.result())
             }
@@ -35,7 +36,7 @@ class Consultants {
 //            //            obj("name" to true, "forename" to true, "company" to true, "consultants" to obj("\$slice" to 1))
 //            obj("name" to true, "forename" to true, "company" to true)
 //        }
-        client.findWithOptions("consultants", query, FindOptions(), { res ->
+        client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
             if (res.succeeded()) {
                 req.response().endWithJson(res.result())
             }
@@ -51,7 +52,7 @@ class Consultants {
         val query = json {
             obj("forename" to forename)
         }
-        client.findWithOptions("consultants", query, FindOptions(), { res ->
+        client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
             if (res.succeeded()) {
                 if(res.result().isEmpty()){
                     req.response().endWithJson("Blablabla consultant non trouvé")
@@ -85,7 +86,7 @@ class Consultants {
         }
 
         //Update the document
-        client.findOneAndUpdate("consultants", query, update, { res ->
+        client.findOneAndUpdate(Constants().COLLECTION, query, update, { res ->
             if (res.succeeded()) {
                 //Send the updated document
                 client.find("consultants", json { obj("name" to newName) }, { res ->

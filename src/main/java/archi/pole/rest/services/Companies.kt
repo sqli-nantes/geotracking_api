@@ -1,5 +1,6 @@
 package archi.pole.rest.services
 
+import archi.pole.rest.utils.Constants
 import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
@@ -28,7 +29,7 @@ class Companies {
         options.fields = json {
             obj("company" to true, "_id" to false)
         }
-        client.findWithOptions("consultants", query, options, { res ->
+        client.findWithOptions(Constants().COLLECTION, query, options, { res ->
             if (res.succeeded()) {
                 req.response().endWithJson(res.result())
             }
@@ -48,7 +49,7 @@ class Companies {
         val fields = json {
             obj("_id" to false, "name" to false, "forename" to false)
         }
-        client.findOne("consultants", query, fields, { res ->
+        client.findOne(Constants().COLLECTION, query, fields, { res ->
             if (res.succeeded()) {
                 if (res.result().isEmpty()) {
                     req.response().endWithJson("Company not found")
