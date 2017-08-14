@@ -1,14 +1,14 @@
 package archi.pole.rest.services
 
-import archi.pole.rest.entities.Company
-import archi.pole.rest.entities.Consultant
 import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.Json
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.mongo.FindOptions
 import io.vertx.ext.web.RoutingContext
 
 import io.vertx.ext.mongo.MongoClient
+import io.vertx.kotlin.core.json.json
+import io.vertx.kotlin.core.json.obj
 
 /**
  * Created by johann on 20/03/17.
@@ -21,25 +21,16 @@ class Companies {
      * Get every company
      */
     fun getCompanies(req: RoutingContext, client: MongoClient) {
-        client.find("companies", JsonObject(), { res ->
+        val query = json {
+            obj()
+        }
+        val options = FindOptions()
+        options.fields = json {
+            obj("company" to true, "_id" to false)
+        }
+        client.findWithOptions("consultants", query, options, { res ->
             if (res.succeeded()) {
-                var companies = JsonArray()
-                for (company in res.result()) {
-                    val consultantsJson = company.getJsonArray("consultants")
-                    val consultants = mutableListOf<Consultant>()
-                    for ((index, consultant) in consultantsJson.withIndex()) {
-                        //TODO: Smart casts de Kotlin: faire confirmer
-                        if (consultant is JsonObject) {
-                            var name : String = if (consultant.getString("name") != null) consultant.getString("name") else ""
-                            var forename : String = if (consultant.getString("forename") != null) consultant.getString("forename") else ""
-                            consultants.add(index, Consultant(name, forename))
-                        }
-                    }
-                    companies.add(JsonObject.mapFrom(Company(company.getString("name"), company.getString("address"), consultants)))
-                }
-                req.response().endWithJson(companies)
-            } else {
-                res.cause().printStackTrace()
+                req.response().endWithJson(res.result())
             }
         })
     }
@@ -48,34 +39,27 @@ class Companies {
     /**
      * Get company from name
      */
-    fun getCompany(req: RoutingContext, id: String, client: MongoClient) {
-        client.find("companies", JsonObject(), { res ->
+    fun getCompany(req: RoutingContext, client: MongoClient) {
+        val name = req.request().getParam("companyname")
+        val query = json {
+            obj("company.name" to name)
+        }
+
+        val fields = json {
+            obj("_id" to false, "name" to false, "forename" to false)
+        }
+        client.findOne("consultants", query, fields, { res ->
             if (res.succeeded()) {
-                var foundCompany = Company()
-                for (company in res.result()) {
-                    if (company is JsonObject) {
-                        if (company.getString("name").equals(id)) {
-                            val consultantsJson = company.getJsonArray("consultants")
-                            val consultants = mutableListOf<Consultant>()
-                            for ((index, consultant) in consultantsJson.withIndex()) {
-                                if (consultant is JsonObject) {
-                                    consultants.add(index, Consultant(consultant.getString("name"), consultant.getString("forename")))
-                                }
-                                foundCompany = Company(company.getString("name"), company.getString("address"), consultants)
-                            }
-                        }
-                    }
-                }
-
-                if (foundCompany.name != "") {
-                    req.response().endWithJson(foundCompany.toJsonObject())
-                } else {
+                if (res.result().isEmpty()) {
                     req.response().endWithJson("Company not found")
+                } else {
+                    req.response().endWithJson(res.result())
                 }
-
             }
         })
+
     }
+
 
     fun HttpServerResponse.endWithJson(obj: Any) {
         this.putHeader("Content-Type", "application/json; charset=utf-8").end(Json.encodePrettily(JsonObject().put("result", obj)))

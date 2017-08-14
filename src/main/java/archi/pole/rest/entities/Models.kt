@@ -7,18 +7,17 @@ import io.vertx.core.json.JsonObject
  */
 
 
-data class Consultant(val name: String = "", val forename: String = "")
+data class Consultant(val name: String = "", val forename: String = "", val company: Company)
 
 
 /**
  * First option
  */
-class Company constructor(val name: String ="", val address: String = "", val consultants: MutableList<Consultant> = mutableListOf()) {
+class Company constructor(val name: String ="", val address: String = "") {
     fun toJsonObject(): JsonObject {
         var json = JsonObject()
         json.put("name", this.name)
         json.put("address", this.address)
-        json.put("consultants", this.consultants)
         return json
     }
 }
