@@ -93,15 +93,15 @@ class Consultants {
 
 
     /**
-     * Update a consultant by name
+     * Update a consultant by ID
      */
-    fun updateConsultant(req: RoutingContext, client: MongoClient) {
-        val oldName = req.request().getParam("consultantname")
+    fun updateConsultantById(req: RoutingContext, client: MongoClient) {
+        val id = req.request().getParam("consultantid")
         val body = req.bodyAsJson
 
         // Match one consultant with name and forename from request parameter
         val query = json {
-            obj("name" to oldName)
+            obj("_id" to id)
         }
 
         val newName: String? = body.getString("name")
