@@ -23,11 +23,6 @@ On lance le conteneur docker en background
 docker run --name mongo-host -d mongo
 ```
 
-Récupérer l'adresse du conteneur docker et la remplacer dans les sources, ex: 
-```
-uri = "mongodb://172.17.0.2:27017"
-```
-
 Setter les variables d'environnement (sous linux)
 ```
     export MONGO_URI=mongodb://mongo-host:27017
