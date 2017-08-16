@@ -51,6 +51,19 @@ curl -X GET -i http://localhost:8080/companies
     docker run -d --name geotracking-api --link mongo-host:mongo-host geotracking-api:1
 ```
 
+### Spécifications de l'API
+
+#### Pour utiliser l'API sous swagger
+
+* Image swagger-ui pré buildée
+
+```
+docker pull swaggerapi/swagger-ui
+```
+* On lance le conteneur 
+```
+sudo docker run -p 80:8080 -e "SWAGGER_JSON=/swagger/swagger.yaml" -v $(pwd):/swagger swaggerapi/swagger-ui
+```
 
 # Licence
 Sous licence MIT
