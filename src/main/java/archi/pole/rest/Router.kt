@@ -24,7 +24,10 @@ class Router : AbstractVerticle() {
         //Allow cors request for swagger
         router.route().handler(CorsHandler.create("*")
                 .allowedMethod(HttpMethod.GET)
-                .allowedMethod(HttpMethod.PUT))
+                .allowedMethod(HttpMethod.PUT)
+                .allowedMethod(HttpMethod.OPTIONS)
+                .allowedHeader("Content-Type")
+        )
 
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
@@ -33,7 +36,7 @@ class Router : AbstractVerticle() {
         router.get("/person/forename/:consultantforename").handler(handleConsultantForename)
         router.get("/people/").handler(handleConsultants)
 
-        router.put("/consultant/:consultantname").handler(handleConsultantPut)
+        router.put("/person/name/:consultantname").handler(handleConsultantPutName)
 
         vertx.createHttpServer().requestHandler({ router.accept(it) }).listen(8080, { res -> fut.complete() })
 
@@ -60,7 +63,7 @@ class Router : AbstractVerticle() {
         Consultants().getConsultants(req, client)
     }
 
-    val handleConsultantPut = Handler <RoutingContext> { req ->
+    val handleConsultantPutName = Handler <RoutingContext> { req ->
         Consultants().updateConsultant(req, client)
     }
 }
