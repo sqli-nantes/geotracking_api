@@ -7,10 +7,12 @@ import archi.pole.rest.utils.Bootstrap
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.Handler
+import io.vertx.core.http.HttpMethod
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.ext.web.handler.CorsHandler
 
 @Suppress("unused")
 class Router : AbstractVerticle() {
@@ -18,6 +20,12 @@ class Router : AbstractVerticle() {
 
     override fun start(fut: Future<Void>) {
         val router = Router.router(vertx)
+
+        //Allow cors request for swagger
+        router.route().handler(CorsHandler.create("*")
+                .allowedMethod(HttpMethod.GET)
+                .allowedMethod(HttpMethod.PUT))
+
         router.route().handler(BodyHandler.create())
         router.get("/companies").handler(handleCompanies)
         router.get("/company/:companyname").handler(handleCompany)
@@ -43,7 +51,7 @@ class Router : AbstractVerticle() {
     }
 
     val handleConsultantName = Handler <RoutingContext> { req ->
-        Consultants().getConsultantByName(req,  client)
+        Consultants().getConsultantByName(req, client)
     }
     val handleConsultantForename = Handler <RoutingContext> { req ->
         Consultants().getConsultantByForename(req, client)
