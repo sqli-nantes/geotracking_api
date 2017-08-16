@@ -1,6 +1,6 @@
 package archi.pole.rest.utils
 
 class Constants {
-    public val COLLECTION = "people"
-
+    val COLLECTION = "people"
+    val PERSON_NOT_FOUND = "Person not found"
 }
