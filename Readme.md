@@ -62,7 +62,7 @@ docker pull swaggerapi/swagger-ui
 ```
 * On lance le conteneur 
 ```
-sudo docker run -p 80:8080 -e "SWAGGER_JSON=/swagger/swagger.yaml" -v $(pwd):/swagger swaggerapi/swagger-ui
+docker run -p 80:8080 -e "SWAGGER_JSON=/swagger/swagger.yaml" -v $(pwd):/swagger swaggerapi/swagger-ui
 ```
 
 # Licence
