@@ -70,6 +70,29 @@ class Consultants {
     }
 
     /**
+     * Get a person by Id
+     */
+    fun getPersonById(req: RoutingContext, client: MongoClient){
+        val id = req.request().getParam("consultantid")
+        val query = json {
+            obj("_id" to id)
+        }
+        client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
+            if (res.succeeded()) {
+                if (res.result().isEmpty()) {
+                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                } else {
+                    req.response().endWithJson(res.result())
+                }
+
+            }
+
+        })
+
+    }
+
+
+    /**
      * Update a consultant by name
      */
     fun updateConsultant(req: RoutingContext, client: MongoClient) {
