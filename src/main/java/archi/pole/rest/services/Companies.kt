@@ -51,8 +51,8 @@ class Companies {
         }
         client.findOne(Constants().COLLECTION, query, fields, { res ->
             if (res.succeeded()) {
-                if (res.result().isEmpty()) {
-                    req.response().endWithJson("Company not found")
+                if (res.result() === null) {
+                    req.response().setStatusCode(404).endWithJson(Constants().COMPANY_NOT_FOUND)
                 } else {
                     req.response().endWithJson(res.result())
                 }
