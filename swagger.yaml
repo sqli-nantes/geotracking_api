@@ -131,6 +131,61 @@ paths: # obligatoire
                     type: "string"
                     example: "Person not found"
 
+      put:
+        tags:
+        - "person"
+        summary: Update a person
+        description: Update the name of a specific person
+        parameters:
+          - name: "name"
+            in : "path"
+            description: "Name of a person"
+            required: true
+            type: "string"
+          - in: body
+            name: data
+            required: true
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                forename:
+                  type: string
+
+        responses:
+          200:
+            description: person
+            schema:
+              type: object
+              properties:
+                result:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: integer
+                      name:
+                        type: string
+                      forename:
+                        type: string
+                      company:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          address:
+                            type: string
+          404:
+            description: Person not found
+            schema:
+              type: object
+              properties:
+                result:
+                    type: "string"
+                    example: "Person not found"
+
   /people:
       get:
         tags:
