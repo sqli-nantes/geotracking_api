@@ -24,7 +24,7 @@ class Consultants {
     }
 
     /**
-     * Get a consultant by name
+     * Get consultants by name following the hierarchy of the mongo document
      */
     fun getConsultantByName(req: RoutingContext, client: MongoClient) {
         val name = req.request().getParam("consultantname")
