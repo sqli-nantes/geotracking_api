@@ -41,12 +41,7 @@ paths: # obligatoire
                   type: object
                   properties:
                     company:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                        address:
-                          type: string
+                      $ref: '#/definitions/company'
 
   /company/{name}:
     get:
@@ -70,12 +65,7 @@ paths: # obligatoire
                 type: object
                 properties:
                   company:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      address:
-                        type: string
+                    $ref: '#/definitions/company'
 
         404:
           description: Company not found
@@ -86,16 +76,45 @@ paths: # obligatoire
                   type: "string"
                   example: "Company not found"
 
-  /person/name/{name}:
+  /people/name/{name}:
       get:
         tags:
-        - "person"
-        summary: Get a specific person
-        description: Get a person by name
+        - "people"
+        summary: Get people by name
+        description: Get people by name
         parameters:
           - name: "name"
             in : "path"
             description: "Name of a person"
+            required: true
+            type: "string"
+        responses:
+          200:
+            description: people
+            schema:
+              $ref: '#/definitions/resultPeople'
+
+          404:
+            description: Person not found
+            schema:
+              type: object
+              properties:
+                result:
+                    type: "string"
+                    example: "Person not found"
+
+
+
+  /person/id/{id}:
+      get:
+        tags:
+        - "person"
+        summary: Get a specific person
+        description: Get a person by id
+        parameters:
+          - name: "id"
+            in : "path"
+            description: "Id of a person"
             required: true
             type: "string"
         responses:
@@ -107,21 +126,7 @@ paths: # obligatoire
                 result:
                   type: array
                   items:
-                    type: object
-                    properties:
-                      _id:
-                        type: integer
-                      name:
-                        type: string
-                      forename:
-                        type: string
-                      company:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          address:
-                            type: string
+                    $ref: '#/definitions/person'
           404:
             description: Person not found
             schema:
@@ -137,7 +142,7 @@ paths: # obligatoire
         summary: Update a person
         description: Update the name of a specific person
         parameters:
-          - name: "name"
+          - name: "id"
             in : "path"
             description: "Name of a person"
             required: true
@@ -162,21 +167,7 @@ paths: # obligatoire
                 result:
                   type: array
                   items:
-                    type: object
-                    properties:
-                      _id:
-                        type: integer
-                      name:
-                        type: string
-                      forename:
-                        type: string
-                      company:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          address:
-                            type: string
+                    $ref: '#/definitions/person'
           404:
             description: Person not found
             schema:
@@ -196,23 +187,35 @@ paths: # obligatoire
           200:
             description: people
             schema:
-              type: object
-              properties:
-                result:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        _id:
-                          type: integer
-                        name:
-                          type: string
-                        forename:
-                          type: string
-                        company:
-                          type: object
-                          properties:
-                            name:
-                              type: string
-                            address:
-                              type: string
+              $ref: '#/definitions/resultPeople'
+
+definitions:
+  person:
+    properties:
+      _id:
+        type: integer
+      name:
+        type: string
+      forename:
+        type: string
+      company:
+        type: object
+        properties:
+          name:
+            type: string
+          address:
+            type: string
+  company:
+    properties:
+      name:
+        type: string
+      address:
+        type: string
+
+  resultPeople:
+    properties:
+      result:
+        type: array
+        items:
+          $ref: '#/definitions/person'
+
