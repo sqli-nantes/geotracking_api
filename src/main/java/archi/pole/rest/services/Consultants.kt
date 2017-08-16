@@ -38,7 +38,11 @@ class Consultants {
 //        }
         client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
             if (res.succeeded()) {
-                req.response().endWithJson(res.result())
+                if (res.result().isEmpty()) {
+                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                } else {
+                    req.response().endWithJson(res.result())
+                }
             }
 
         })
@@ -54,9 +58,9 @@ class Consultants {
         }
         client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
             if (res.succeeded()) {
-                if(res.result().isEmpty()){
-                    req.response().endWithJson("Blablabla consultant non trouvé")
-                }else{
+                if (res.result().isEmpty()) {
+                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                } else {
                     req.response().endWithJson(res.result())
                 }
 
@@ -88,14 +92,19 @@ class Consultants {
         //Update the document
         client.findOneAndUpdate(Constants().COLLECTION, query, update, { res ->
             if (res.succeeded()) {
-                //Send the updated document
-                client.find(Constants().COLLECTION, json { obj("name" to newName) }, { res ->
-                    if (res.succeeded()) {
-                        req.response().endWithJson(res.result())
-                    } else {
-                        res.cause().printStackTrace()
-                    }
-                })
+                if (res.result() === null) {
+                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                } else {
+                    //Send the updated document
+                    client.find(Constants().COLLECTION, json { obj("name" to newName) }, { res ->
+                        if (res.succeeded()) {
+                            req.response().endWithJson(res.result())
+                        } else {
+                            res.cause().printStackTrace()
+                        }
+                    })
+                }
+
             } else {
                 res.cause().printStackTrace()
             }
