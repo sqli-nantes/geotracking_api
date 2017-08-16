@@ -119,7 +119,7 @@ class Consultants {
                     req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
                 } else {
                     //Send the updated document
-                    client.find(Constants().COLLECTION, json { obj("name" to newName) }, { res ->
+                    client.find(Constants().COLLECTION, json { obj("_id" to id) }, { res ->
                         if (res.succeeded()) {
                             req.response().endWithJson(res.result())
                         } else {
