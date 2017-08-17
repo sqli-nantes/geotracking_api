@@ -1,6 +1,8 @@
 package archi.pole.rest.services
 
+
 import archi.pole.rest.utils.Constants
+
 import io.vertx.core.json.Json
 import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.JsonObject
@@ -9,10 +11,13 @@ import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.mongo.UpdateOptions
 import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.core.json.*
-import io.vertx.kotlin.ext.mongo.UpdateOptions
+import io.vertx.core.logging.LoggerFactory
 
 
-class Consultants {
+
+class Consultants{
+
+    var logger = LoggerFactory.getLogger("Consultants")
 
     /**
      * Get every consultant
@@ -97,22 +102,43 @@ class Consultants {
     /**
      * Update a consultant by ID
      */
-    fun updateConsultantById(req: RoutingContext, client: MongoClient) {
+    fun updateConsultantById(req: RoutingContext, client: MongoClient){
         val id = req.request().getParam("consultantid")
-        val body = req.bodyAsJson
 
-        // Match one consultant with name and forename from request parameter
+        var body = JsonObject()
+        try {
+            body = req.bodyAsJson
+        }
+        catch (e: Exception) {
+            logger.info(Constants().BODY_FORMAT_WRONG_UPDATE_PERSON);
+            req.response().endWithJson(Constants().BODY_FORMAT_WRONG_UPDATE_PERSON)
+            return
+        }
+
+        // Match one person with id from request parameter
         val query = json {
             obj("_id" to id)
         }
 
         //List of allowed parameters to prevent insert of unknown fields
-        val allowedParams = listOf("name", "forename", "company.name", "company.forename")
+        val allowedParams = listOf("name", "forename", "company")
+        val allowedParamsCompany = listOf("name", "address")
 
+        //Construction of update request
         var paramUpdate = json { obj() }
         body.map.forEach { param, _ ->
+           //Allow only first level properties
             if (!param.isEmpty() && allowedParams.contains(param)) {
-                paramUpdate.put(param, body.getString(param))
+                if (param !== "company") {
+                    paramUpdate.put(param, body.getString(param))
+                } else {
+                    //Allow properties inside company object
+                    body.getJsonObject(param).map.forEach { paramCompany, value ->
+                        if(!paramCompany.isEmpty() && allowedParamsCompany.contains(paramCompany)){
+                            paramUpdate.put("company." + paramCompany, value)
+                        }
+                    }
+                }
             }
         }
 
