@@ -59,8 +59,8 @@ Il existe deux options:
 
 1- Swagger ui en ligne
 * Se rendre sur cette adresse: http://petstore.swagger.io/
-* Insérer l'URL de la description YAML: https://raw.githubusercontent.com/sqli-nantes/geotracking_api/master/swagger.yaml
-* On peut nabiguer dans notre description d'API et la tester si CORS a été activé
+* Insérer l'URL de la description YAML, ou cliquer sur le lien: http://petstore.swagger.io/?url=https://raw.githubusercontent.com/sqli-nantes/geotracking_api/master/swagger.yaml
+* On peut naviguer dans notre description d'API et la tester si CORS a été activé
 
 2- Conteneur docker en local
 * On charge l'image swagger-ui pré buildée
