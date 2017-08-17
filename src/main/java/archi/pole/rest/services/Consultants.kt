@@ -6,8 +6,10 @@ import io.vertx.core.http.HttpServerResponse
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.FindOptions
 import io.vertx.ext.mongo.MongoClient
+import io.vertx.ext.mongo.UpdateOptions
 import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.core.json.*
+import io.vertx.kotlin.ext.mongo.UpdateOptions
 
 
 class Consultants {
@@ -72,7 +74,7 @@ class Consultants {
     /**
      * Get a person by Id
      */
-    fun getPersonById(req: RoutingContext, client: MongoClient){
+    fun getPersonById(req: RoutingContext, client: MongoClient) {
         val id = req.request().getParam("consultantid")
         val query = json {
             obj("_id" to id)
@@ -104,28 +106,31 @@ class Consultants {
             obj("_id" to id)
         }
 
-        val newName: String? = body.getString("name")
-        val newForename: String? = body.getString("forename")
+        //List of allowed parameters to prevent insert of unknown fields
+        val allowedParams = listOf("name", "forename", "company.name", "company.forename")
+
+        var paramUpdate = json { obj() }
+        body.map.forEach { param, _ ->
+            if (!param.isEmpty() && allowedParams.contains(param)) {
+                paramUpdate.put(param, body.getString(param))
+            }
+        }
 
         // Update name or/and forename
         val update = json {
-            obj("\$set" to obj("name" to newName, "forename" to newForename))
+            obj("\$set" to paramUpdate)
         }
 
+        val updateOptions = UpdateOptions()
+        updateOptions.setReturningNewDocument(true)
+
         //Update the document
-        client.findOneAndUpdate(Constants().COLLECTION, query, update, { res ->
+        client.findOneAndUpdateWithOptions(Constants().COLLECTION, query, update, FindOptions(), updateOptions, { res ->
             if (res.succeeded()) {
                 if (res.result() === null) {
                     req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
                 } else {
-                    //Send the updated document
-                    client.find(Constants().COLLECTION, json { obj("_id" to id) }, { res ->
-                        if (res.succeeded()) {
-                            req.response().endWithJson(res.result())
-                        } else {
-                            res.cause().printStackTrace()
-                        }
-                    })
+                    req.response().endWithJson(res.result())
                 }
 
             } else {
