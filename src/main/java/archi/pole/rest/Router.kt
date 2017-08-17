@@ -26,7 +26,7 @@ import io.vertx.kotlin.core.json.obj
 @Suppress("unused")
 class Router : AbstractVerticle() {
     lateinit var client: MongoClient
-    val logger: Logger = LoggerFactory.getLogger("Consultants")
+    val logger: Logger = LoggerFactory.getLogger("Router")
 
     override fun start(fut: Future<Void>) {
         val router = Router.router(vertx)
