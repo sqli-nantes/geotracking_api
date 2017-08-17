@@ -157,6 +157,13 @@ paths: # obligatoire
                   type: string
                 forename:
                   type: string
+                company:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
 
         responses:
           200:
@@ -168,6 +175,14 @@ paths: # obligatoire
                   type: array
                   items:
                     $ref: '#/definitions/person'
+          400:
+            description: Wrong body
+            schema:
+              type: object
+              properties:
+                result:
+                    type: "string"
+                    example: "Wrong body format, must be a json object"
           404:
             description: Person not found
             schema:
@@ -218,4 +233,3 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/person'
-
