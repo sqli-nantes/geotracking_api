@@ -5,6 +5,7 @@ import archi.pole.rest.utils.Constants
 
 import io.vertx.core.json.Json
 import io.vertx.core.http.HttpServerResponse
+import io.vertx.core.json.DecodeException
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.FindOptions
 import io.vertx.ext.mongo.MongoClient
@@ -102,18 +103,11 @@ class Consultants{
     /**
      * Update a consultant by ID
      */
+    @Throws(DecodeException::class)
     fun updateConsultantById(req: RoutingContext, client: MongoClient){
         val id = req.request().getParam("consultantid")
 
-        var body = JsonObject()
-        try {
-            body = req.bodyAsJson
-        }
-        catch (e: Exception) {
-            logger.info(Constants().BODY_FORMAT_WRONG_UPDATE_PERSON);
-            req.response().endWithJson(Constants().BODY_FORMAT_WRONG_UPDATE_PERSON)
-            return
-        }
+        val body = req.bodyAsJson
 
         // Match one person with id from request parameter
         val query = json {
@@ -125,7 +119,7 @@ class Consultants{
         val allowedParamsCompany = listOf("name", "address")
 
         //Construction of update request
-        var paramUpdate = json { obj() }
+        val paramUpdate = json { obj() }
         body.map.forEach { param, _ ->
            //Allow only first level properties
             if (!param.isEmpty() && allowedParams.contains(param)) {
@@ -156,13 +150,13 @@ class Consultants{
                 if (res.result() === null) {
                     req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
                 } else {
+                    logger.info("Person of id $id updated")
                     req.response().endWithJson(res.result())
                 }
 
             } else {
                 res.cause().printStackTrace()
             }
-
         })
 
 
