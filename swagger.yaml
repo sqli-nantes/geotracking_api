@@ -181,17 +181,23 @@ paths: # obligatoire
               type: object
               properties:
                 result:
-                    type: "string"
-                    example: "Wrong body format, must be a json object"
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      example: "Wrong body format, must be a json object"
+                    details:
+                      type: string
+                      example: "Failed to decode: Unexpected character ... "
           404:
             description: Person not found
             schema:
               type: object
               properties:
                 result:
-                    type: "string"
-                    example: "Person not found"
+                  type: string
 
+                  example: "Person not found"
   /people:
       get:
         tags:

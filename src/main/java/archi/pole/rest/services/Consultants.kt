@@ -15,8 +15,7 @@ import io.vertx.kotlin.core.json.*
 import io.vertx.core.logging.LoggerFactory
 
 
-
-class Consultants{
+class Consultants {
 
     var logger = LoggerFactory.getLogger("Consultants")
 
@@ -104,7 +103,7 @@ class Consultants{
      * Update a consultant by ID
      */
     @Throws(DecodeException::class)
-    fun updateConsultantById(req: RoutingContext, client: MongoClient){
+    fun updateConsultantById(req: RoutingContext, client: MongoClient) {
         val id = req.request().getParam("consultantid")
 
         val body = req.bodyAsJson
@@ -121,14 +120,14 @@ class Consultants{
         //Construction of update request
         val paramUpdate = json { obj() }
         body.map.forEach { param, _ ->
-           //Allow only first level properties
+            //Allow only first level properties
             if (!param.isEmpty() && allowedParams.contains(param)) {
                 if (param !== "company") {
                     paramUpdate.put(param, body.getString(param))
                 } else {
                     //Allow properties inside company object
                     body.getJsonObject(param).map.forEach { paramCompany, value ->
-                        if(!paramCompany.isEmpty() && allowedParamsCompany.contains(paramCompany)){
+                        if (!paramCompany.isEmpty() && allowedParamsCompany.contains(paramCompany)) {
                             paramUpdate.put("company." + paramCompany, value)
                         }
                     }

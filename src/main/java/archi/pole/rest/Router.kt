@@ -20,14 +20,14 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.handler.CorsHandler
-import java.io.IOException
+import io.vertx.kotlin.core.json.json
+import io.vertx.kotlin.core.json.obj
 
 @Suppress("unused")
 class Router : AbstractVerticle() {
     lateinit var client: MongoClient
     val logger: Logger = LoggerFactory.getLogger("Consultants")
 
-    //    @Throws(Exception::class)
     override fun start(fut: Future<Void>) {
         val router = Router.router(vertx)
 
@@ -74,12 +74,16 @@ class Router : AbstractVerticle() {
     val handlePersonId = Handler <RoutingContext> { req: RoutingContext ->
         Consultants().getPersonById(req, client)
     }
+
     val handleConsultantPutId = Handler <RoutingContext> { req ->
         try {
             Consultants().updateConsultantById(req, client)
         } catch (e: DecodeException) {
             logger.error(Constants().BODY_FORMAT_WRONG_UPDATE_PERSON)
-            req.response().setStatusCode(400).endWithJson(Constants().BODY_FORMAT_WRONG_UPDATE_PERSON)
+            val response = json {
+                obj("description" to Constants().BODY_FORMAT_WRONG_UPDATE_PERSON, "details" to e.message)
+            }
+            req.response().setStatusCode(400).endWithJson(response)
         }
     }
 
