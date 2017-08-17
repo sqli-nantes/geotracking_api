@@ -55,7 +55,15 @@ curl -X GET -i http://localhost:8080/companies
 
 #### Pour utiliser l'API sous swagger
 
-* Image swagger-ui pré buildée
+Il existe deux options:
+
+1- Swagger ui en ligne
+* Se rendre sur cette adresse: http://petstore.swagger.io/
+* Insérer l'URL de la description YAML: https://raw.githubusercontent.com/sqli-nantes/geotracking_api/master/swagger.yaml
+* On peut nabiguer dans notre description d'API et la tester si CORS a été activé
+
+2- Conteneur docker en local
+* On charge l'image swagger-ui pré buildée
 
 ```
 docker pull swaggerapi/swagger-ui
