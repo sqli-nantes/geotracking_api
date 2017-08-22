@@ -13,11 +13,11 @@ class Bootstrap {
 
     private val MOCK_DATA by lazy {
         listOf(
-                Consultant("Pierre", "Dupont", Company("SG", "Saint Herblain")),
-                Consultant("Jean", "Dho", Company("La Poste", "Nantes")),
-                Consultant("Carine", "Dupont", Company("SG", "Saint Herblain")),
-                Consultant("Lucie", "Buton", Company("ADP", "Carquefou")),
-                Consultant("Luc", "Dart", Company("La Poste", "Nantes"))
+                Consultant("Pierre", "Dupont", Company("SG", "rue du Champ de Tir 44000 Nantes")),
+                Consultant("Jean", "Dho", Company("La Poste", "12 boulevard Auguste Pageot Nantes")),
+                Consultant("Carine", "Dupont", Company("SG", "rue du Champ de Tir 44000 Nantes")),
+                Consultant("Lucie", "Buton", Company("ADP", "Rue Augustin Fresnel 44470 Carquefou")),
+                Consultant("Luc", "Dart", Company("La Poste", "12 boulevard Auguste Pageot Nantes"))
         )
     }
 
