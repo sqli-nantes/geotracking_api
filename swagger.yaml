@@ -219,6 +219,8 @@ definitions:
         type: string
       forename:
         type: string
+      picture:
+        type: string
       company:
         type: object
         properties:
