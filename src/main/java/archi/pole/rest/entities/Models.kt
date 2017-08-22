@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonObject
  */
 
 
-data class Consultant(val name: String = "", val forename: String = "", val company: Company)
+data class Consultant(val name: String = "", val forename: String = "", val picture: String ="", val company: Company)
 
 
 /**
@@ -15,7 +15,7 @@ data class Consultant(val name: String = "", val forename: String = "", val comp
  */
 class Company constructor(val name: String ="", val address: String = "") {
     fun toJsonObject(): JsonObject {
-        var json = JsonObject()
+        val json = JsonObject()
         json.put("name", this.name)
         json.put("address", this.address)
         return json
