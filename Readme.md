@@ -73,5 +73,13 @@ docker pull swaggerapi/swagger-ui
 docker run -p 80:8080 -e "SWAGGER_JSON=/swagger/swagger.yaml" -v $(pwd):/swagger swaggerapi/swagger-ui
 ```
 
+### TODO
+* Spécifier les chemins au pluriel ex: Get: /people/{id}
+* La recherche par rapport au nom doit être en paramètre de recherche, ex: Get /people?name=Jean
+* Supprimer l'enveloppe "result" de la réponse, ex: 
+    - Get /people => []
+    - Get /people/{id} => {name:...}
+* Ajouter le nom d'API dans l'URI, ex: /colabloc/people/
+
 # Licence
 Sous licence MIT
