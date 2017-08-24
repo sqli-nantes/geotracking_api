@@ -79,9 +79,9 @@ class Router : AbstractVerticle() {
         try {
             Consultants().updateConsultantById(req, client)
         } catch (e: DecodeException) {
-            logger.error(Constants().BODY_FORMAT_WRONG_UPDATE_PERSON)
+            logger.error(Constants.BODY_FORMAT_WRONG_UPDATE_PERSON)
             val response = json {
-                obj("description" to Constants().BODY_FORMAT_WRONG_UPDATE_PERSON, "details" to e.message)
+                obj("description" to Constants.BODY_FORMAT_WRONG_UPDATE_PERSON, "details" to e.message)
             }
             req.response().setStatusCode(400).endWithJson(response)
         }

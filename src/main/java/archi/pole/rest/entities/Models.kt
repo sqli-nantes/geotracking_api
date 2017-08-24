@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonObject
  */
 
 
-data class Consultant(val name: String = "", val forename: String = "", val picture: String ="", val company: Company)
+data class Consultant(val name: String = "", val forename: String = "", val uid: String ="", val company: Company)
 
 
 /**

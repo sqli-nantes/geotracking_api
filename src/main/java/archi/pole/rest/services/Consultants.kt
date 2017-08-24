@@ -23,7 +23,7 @@ class Consultants {
      * Get every consultant
      */
     fun getConsultants(req: RoutingContext, client: MongoClient) {
-        client.find(Constants().COLLECTION, JsonObject(), { res ->
+        client.find(Constants.COLLECTION, JsonObject(), { res ->
             if (res.succeeded()) {
                 req.response().endWithJson(res.result())
             }
@@ -43,10 +43,10 @@ class Consultants {
 //            //            obj("name" to true, "forename" to true, "company" to true, "consultants" to obj("\$slice" to 1))
 //            obj("name" to true, "forename" to true, "company" to true)
 //        }
-        client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
+        client.findWithOptions(Constants.COLLECTION, query, FindOptions(), { res ->
             if (res.succeeded()) {
                 if (res.result().isEmpty()) {
-                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                    req.response().setStatusCode(404).endWithJson(Constants.PERSON_NOT_FOUND)
                 } else {
                     req.response().endWithJson(res.result())
                 }
@@ -63,10 +63,10 @@ class Consultants {
         val query = json {
             obj("forename" to forename)
         }
-        client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
+        client.findWithOptions(Constants.COLLECTION, query, FindOptions(), { res ->
             if (res.succeeded()) {
                 if (res.result().isEmpty()) {
-                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                    req.response().setStatusCode(404).endWithJson(Constants.PERSON_NOT_FOUND)
                 } else {
                     req.response().endWithJson(res.result())
                 }
@@ -84,10 +84,10 @@ class Consultants {
         val query = json {
             obj("_id" to id)
         }
-        client.findWithOptions(Constants().COLLECTION, query, FindOptions(), { res ->
+        client.findWithOptions(Constants.COLLECTION, query, FindOptions(), { res ->
             if (res.succeeded()) {
                 if (res.result().isEmpty()) {
-                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                    req.response().setStatusCode(404).endWithJson(Constants.PERSON_NOT_FOUND)
                 } else {
                     req.response().endWithJson(res.result())
                 }
@@ -144,10 +144,10 @@ class Consultants {
         updateOptions.setReturningNewDocument(true)
 
         //Update the document
-        client.findOneAndUpdateWithOptions(Constants().COLLECTION, query, update, FindOptions(), updateOptions, { res ->
+        client.findOneAndUpdateWithOptions(Constants.COLLECTION, query, update, FindOptions(), updateOptions, { res ->
             if (res.succeeded()) {
                 if (res.result() === null) {
-                    req.response().setStatusCode(404).endWithJson(Constants().PERSON_NOT_FOUND)
+                    req.response().setStatusCode(404).endWithJson(Constants.PERSON_NOT_FOUND)
                 } else {
                     logger.info("Person of id $id updated")
                     req.response().endWithJson(res.result())

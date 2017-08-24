@@ -29,7 +29,7 @@ class Companies {
         options.fields = json {
             obj("company" to true, "_id" to false)
         }
-        client.findWithOptions(Constants().COLLECTION, query, options, { res ->
+        client.findWithOptions(Constants.COLLECTION, query, options, { res ->
             if (res.succeeded()) {
                 req.response().endWithJson(res.result())
             }
@@ -49,10 +49,10 @@ class Companies {
         val fields = json {
             obj("_id" to false, "name" to false, "forename" to false)
         }
-        client.findOne(Constants().COLLECTION, query, fields, { res ->
+        client.findOne(Constants.COLLECTION, query, fields, { res ->
             if (res.succeeded()) {
                 if (res.result() === null) {
-                    req.response().setStatusCode(404).endWithJson(Constants().COMPANY_NOT_FOUND)
+                    req.response().setStatusCode(404).endWithJson(Constants.COMPANY_NOT_FOUND)
                 } else {
                     req.response().endWithJson(res.result())
                 }
